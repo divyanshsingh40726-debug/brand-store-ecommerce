@@ -15,6 +15,8 @@ export interface Product {
   colors: string[];
   badge?: string;
   data: {
+     id: string;
+    image : string;
     _id: string;
   name: string;
   slug: string;
