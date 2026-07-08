@@ -65,9 +65,11 @@ export interface Category {
   id: string;
   name: string;
   slug: string;
-  description?: string;
-  image?: string;
-  isActive?: boolean;
+  image: string;
+  description: string;
+  parentCategory: string | null;
+  productCount: number;
+  isActive: boolean;
 }
 
 
