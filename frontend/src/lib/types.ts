@@ -14,6 +14,7 @@ export interface Product {
   sizes: string[];
   colors: string[];
   badge?: string;
+  data: unknown;
 }
 
 export interface ProductColor {
