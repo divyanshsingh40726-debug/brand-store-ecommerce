@@ -63,12 +63,13 @@ export default function ProductDetailPage({
       let p = await getProductBySlug(slug);
       // console.log("********", p);
       if (cancelled) return;
-      p = p.data;
+      
       if (!p) {
         setNotFoundFlag(true);
         setLoading(false);
         return;
       }
+      p = p.data;
       console.log(p);
       setProduct(p);
       setSelectedSize(p.sizes[0].size ?? "");
