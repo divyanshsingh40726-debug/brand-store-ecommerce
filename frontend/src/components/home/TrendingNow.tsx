@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Heart, Star } from 'lucide-react';
-import { SAMPLE_PRODUCTS } from '@/constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { toggleWishlistItem } from '@/store/slices/wishlistSlice';
-import { cn, formatPrice, getDiscountPercentage } from '@/lib/utils';
-import { toast } from 'sonner';
-import Image from 'next/image';
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { Heart, Star } from "lucide-react";
+import { SAMPLE_PRODUCTS } from "@/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { toggleWishlistItem } from "@/store/slices/wishlistSlice";
+import { cn, formatPrice, getDiscountPercentage } from "@/lib/utils";
+import { toast } from "sonner";
+import Image from "next/image";
 
 export interface Product {
   id: string;
@@ -33,6 +33,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
+  console.log("PRODUCTCARD", product);
   const dispatch = useDispatch();
   const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
   const isWishlisted = wishlistItems.includes(product.id);
@@ -41,7 +42,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     dispatch(toggleWishlistItem(product.id));
-    toast(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist', {
+    toast(isWishlisted ? "Removed from wishlist" : "Added to wishlist", {
       description: product.name,
     });
   };
@@ -54,7 +55,10 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="group flex flex-col"
     >
-      <Link href={`/product/${product.slug}`} className="relative aspect-[4/5] bg-muted rounded-2xl overflow-hidden mb-4">
+      <Link
+        href={`/product/${product.slug}`}
+        className="relative aspect-[4/5] bg-muted rounded-2xl overflow-hidden mb-4"
+      >
         {/* Badges */}
         <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
           {product.badge && (
@@ -74,14 +78,21 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           onClick={handleWishlist}
           className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 dark:bg-black/40 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
         >
-          <Heart className={cn('h-4 w-4 transition-colors', isWishlisted ? 'fill-[var(--brand-red)] text-[var(--brand-red)]' : 'text-foreground')} />
+          <Heart
+            className={cn(
+              "h-4 w-4 transition-colors",
+              isWishlisted
+                ? "fill-[var(--brand-red)] text-[var(--brand-red)]"
+                : "text-foreground",
+            )}
+          />
         </button>
 
         {/* Image */}
         <div className="absolute inset-0 bg-gradient-to-br from-muted-foreground/10 to-muted-foreground/20" />
-        <Image 
-          src={product.image} 
-          alt={product.name} 
+        <Image
+          src={product.image || (product.images && product.images[0])}
+          alt={product.name}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 300px"
@@ -98,14 +109,19 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       {/* Product Info */}
       <div className="space-y-1">
         <p className="text-[11px] font-medium tracking-[0.1em] uppercase text-muted-foreground">
-          {product.brand}
+          {product.brand.name}
         </p>
         <div className="flex items-start justify-between gap-2">
-          <Link href={`/product/${product.slug}`} className="text-sm font-medium group-hover:text-[var(--brand-red)] transition-colors line-clamp-1 flex-1">
+          <Link
+            href={`/product/${product.slug}`}
+            className="text-sm font-medium group-hover:text-[var(--brand-red)] transition-colors line-clamp-1 flex-1"
+          >
             {product.name}
           </Link>
           <div className="text-right shrink-0">
-            <span className="text-sm font-semibold">{formatPrice(product.price)}</span>
+            <span className="text-sm font-semibold">
+              {formatPrice(product.price)}
+            </span>
             {product.compareAtPrice > 0 && (
               <span className="block text-xs text-muted-foreground line-through">
                 {formatPrice(product.compareAtPrice)}
@@ -146,8 +162,12 @@ export default function TrendingNow() {
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--brand-red)] mb-2">
               Fresh on the Shelves
             </p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Trending Now</h2>
-            <p className="text-muted-foreground mt-2">The pairs everyone is lacing up this week.</p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+              Trending Now
+            </h2>
+            <p className="text-muted-foreground mt-2">
+              The pairs everyone is lacing up this week.
+            </p>
           </motion.div>
           <Link
             href="/shop?sort=-numReviews"

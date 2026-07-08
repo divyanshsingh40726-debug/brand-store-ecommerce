@@ -1,20 +1,26 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Minus, Plus, Trash2, ArrowRight, ShieldCheck } from 'lucide-react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { updateQuantity, removeFromCart, clearCart } from '@/store/slices/cartSlice';
-import { cn, formatPrice } from '@/lib/utils';
-import Image from 'next/image';
-import { toast } from 'sonner';
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { Minus, Plus, Trash2, ArrowRight, ShieldCheck } from "lucide-react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import {
+  updateQuantity,
+  removeFromCart,
+  clearCart,
+} from "@/store/slices/cartSlice";
+import { cn, formatPrice } from "@/lib/utils";
+import Image from "next/image";
+import { toast } from "sonner";
 
 export default function CartPage() {
   const dispatch = useDispatch();
-  const { items, totalItems, totalPrice } = useSelector((state: RootState) => state.cart);
+  const { items, totalItems, totalPrice } = useSelector(
+    (state: RootState) => state.cart,
+  );
 
   const handleUpdateQuantity = (id: string, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -23,7 +29,7 @@ export default function CartPage() {
 
   const handleRemove = (id: string, name: string) => {
     dispatch(removeFromCart(id));
-    toast.success('Item removed', { description: name });
+    toast.success("Item removed", { description: name });
   };
 
   const shipping = totalPrice > 150 ? 0 : 15;
@@ -35,7 +41,9 @@ export default function CartPage() {
       <Navbar />
       <main className="pt-24 pb-20 min-h-screen">
         <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold tracking-tight mb-8">Shopping Bag</h1>
+          <h1 className="text-3xl font-bold tracking-tight mb-8">
+            Shopping Bag
+          </h1>
 
           {items.length === 0 ? (
             <div className="text-center py-20 bg-muted/20 rounded-3xl border border-border">
@@ -43,7 +51,9 @@ export default function CartPage() {
                 <Trash2 className="h-8 w-8 text-muted-foreground" />
               </div>
               <h2 className="text-2xl font-semibold mb-2">Your bag is empty</h2>
-              <p className="text-muted-foreground mb-8">Looks like you haven&apos;t added any items yet.</p>
+              <p className="text-muted-foreground mb-8">
+                Looks like you haven&apos;t added any items yet.
+              </p>
               <Link
                 href="/shop"
                 className="inline-flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-sm font-semibold text-background hover:bg-foreground/90 transition-colors"
@@ -56,7 +66,9 @@ export default function CartPage() {
               {/* Cart Items List */}
               <div className="lg:col-span-8 space-y-6">
                 <div className="flex items-center justify-between pb-4 border-b">
-                  <span className="text-sm font-medium">{totalItems} {totalItems === 1 ? 'Item' : 'Items'}</span>
+                  <span className="text-sm font-medium">
+                    {totalItems} {totalItems === 1 ? "Item" : "Items"}
+                  </span>
                   <button
                     onClick={() => dispatch(clearCart())}
                     className="text-sm font-medium text-muted-foreground hover:text-destructive transition-colors"
@@ -76,8 +88,17 @@ export default function CartPage() {
                       className="flex gap-4 sm:gap-6 pb-6 border-b"
                     >
                       {/* Image */}
-                      <Link href={`/product/${item.productId}`} className="shrink-0 w-24 h-24 sm:w-32 sm:h-32 bg-muted rounded-xl overflow-hidden relative">
-                        <Image src={item.image} alt={item.name} fill className="object-cover" sizes="(max-width: 640px) 96px, 128px" />
+                      <Link
+                        href={`/product/${item.productId}`}
+                        className="shrink-0 w-24 h-24 sm:w-32 sm:h-32 bg-muted rounded-xl overflow-hidden relative"
+                      >
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 96px, 128px"
+                        />
                       </Link>
 
                       {/* Details */}
@@ -85,19 +106,33 @@ export default function CartPage() {
                         <div className="flex justify-between items-start gap-4">
                           <div>
                             <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-1">
-                              {item.brand}
+                              {item.brand.name}
                             </p>
-                            <Link href={`/product/${item.productId}`} className="text-base sm:text-lg font-semibold hover:text-[var(--brand-red)] transition-colors line-clamp-2">
+                            <Link
+                              href={`/product/${item.productId}`}
+                              className="text-base sm:text-lg font-semibold hover:text-[var(--brand-red)] transition-colors line-clamp-2"
+                            >
                               {item.name}
                             </Link>
                             <p className="text-sm text-muted-foreground mt-1">
-                              Color: <span className="font-medium text-foreground">{item.color}</span> | Size: <span className="font-medium text-foreground">{item.size}</span>
+                              Color:{" "}
+                              <span className="font-medium text-foreground">
+                                {item.color}
+                              </span>{" "}
+                              | Size:{" "}
+                              <span className="font-medium text-foreground">
+                                {item.size}
+                              </span>
                             </p>
                           </div>
                           <div className="text-right shrink-0">
-                            <p className="text-base sm:text-lg font-semibold">{formatPrice(item.price)}</p>
+                            <p className="text-base sm:text-lg font-semibold">
+                              {formatPrice(item.price)}
+                            </p>
                             {item.compareAtPrice > 0 && (
-                              <p className="text-sm text-muted-foreground line-through">{formatPrice(item.compareAtPrice)}</p>
+                              <p className="text-sm text-muted-foreground line-through">
+                                {formatPrice(item.compareAtPrice)}
+                              </p>
                             )}
                           </div>
                         </div>
@@ -106,14 +141,20 @@ export default function CartPage() {
                         <div className="mt-auto pt-4 flex items-center justify-between">
                           <div className="flex items-center h-9 bg-muted rounded-full px-1 border border-border">
                             <button
-                              onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
+                              onClick={() =>
+                                handleUpdateQuantity(item.id, item.quantity - 1)
+                              }
                               className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-background transition-colors text-muted-foreground hover:text-foreground"
                             >
                               <Minus className="h-3 w-3" />
                             </button>
-                            <span className="w-8 text-center text-sm font-semibold">{item.quantity}</span>
+                            <span className="w-8 text-center text-sm font-semibold">
+                              {item.quantity}
+                            </span>
                             <button
-                              onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                              onClick={() =>
+                                handleUpdateQuantity(item.id, item.quantity + 1)
+                              }
                               className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-background transition-colors text-muted-foreground hover:text-foreground"
                             >
                               <Plus className="h-3 w-3" />
@@ -135,16 +176,22 @@ export default function CartPage() {
 
               {/* Order Summary */}
               <div className="lg:col-span-4 bg-muted/30 rounded-3xl p-6 sm:p-8 border border-border sticky top-24">
-                <h2 className="text-xl font-bold tracking-tight mb-6">Order Summary</h2>
+                <h2 className="text-xl font-bold tracking-tight mb-6">
+                  Order Summary
+                </h2>
 
                 <div className="space-y-4 text-sm mb-6">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span className="font-medium">{formatPrice(totalPrice)}</span>
+                    <span className="font-medium">
+                      {formatPrice(totalPrice)}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Shipping</span>
-                    <span className="font-medium">{shipping === 0 ? 'Free' : formatPrice(shipping)}</span>
+                    <span className="font-medium">
+                      {shipping === 0 ? "Free" : formatPrice(shipping)}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Estimated Tax</span>
@@ -154,7 +201,9 @@ export default function CartPage() {
 
                 <div className="flex justify-between items-center py-4 border-t mb-6">
                   <span className="text-base font-bold">Total</span>
-                  <span className="text-xl font-bold">{formatPrice(orderTotal)}</span>
+                  <span className="text-xl font-bold">
+                    {formatPrice(orderTotal)}
+                  </span>
                 </div>
 
                 <Link

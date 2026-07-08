@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface IOrder extends Document {
   user: mongoose.Types.ObjectId;
@@ -23,7 +23,7 @@ export interface IOrder extends Document {
     postalCode: string;
     country: string;
   };
-  paymentMethod: 'stripe' | 'razorpay' | 'cod';
+  paymentMethod: "stripe" | "razorpay" | "cod";
   paymentResult: {
     id: string;
     status: string;
@@ -36,7 +36,14 @@ export interface IOrder extends Document {
   discountAmount: number;
   totalPrice: number;
   couponCode: string;
-  status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'returned';
+  status:
+    | "pending"
+    | "confirmed"
+    | "processing"
+    | "shipped"
+    | "delivered"
+    | "cancelled"
+    | "returned";
   isPaid: boolean;
   paidAt: Date;
   isDelivered: boolean;
@@ -56,17 +63,26 @@ const orderSchema = new Schema<IOrder>(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     orderNumber: {
       type: String,
       required: true,
       unique: true,
+      default: () =>
+        `BS-${Date.now()}-${Math.random()
+          .toString(36)
+          .substring(2, 7)
+          .toUpperCase()}`,
     },
     items: [
       {
-        product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+        product: {
+          type: Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
         name: { type: String, required: true },
         image: { type: String, required: true },
         brand: { type: String, required: true },
@@ -89,7 +105,7 @@ const orderSchema = new Schema<IOrder>(
     paymentMethod: {
       type: String,
       required: true,
-      enum: ['stripe', 'razorpay', 'cod'],
+      enum: ["stripe", "razorpay", "cod"],
     },
     paymentResult: {
       id: String,
@@ -102,39 +118,47 @@ const orderSchema = new Schema<IOrder>(
     shippingPrice: { type: Number, required: true, default: 0 },
     discountAmount: { type: Number, default: 0 },
     totalPrice: { type: Number, required: true, default: 0 },
-    couponCode: { type: String, default: '' },
+    couponCode: { type: String, default: "" },
     status: {
       type: String,
-      enum: ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'returned'],
-      default: 'pending',
+      enum: [
+        "pending",
+        "confirmed",
+        "processing",
+        "shipped",
+        "delivered",
+        "cancelled",
+        "returned",
+      ],
+      default: "pending",
     },
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
     isDelivered: { type: Boolean, default: false },
     deliveredAt: { type: Date },
-    trackingNumber: { type: String, default: '' },
+    trackingNumber: { type: String, default: "" },
     estimatedDelivery: { type: Date },
     statusHistory: [
       {
         status: { type: String, required: true },
         timestamp: { type: Date, default: Date.now },
-        note: { type: String, default: '' },
+        note: { type: String, default: "" },
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Generate order number before saving
-orderSchema.pre('save', function (next) {
-  if (!this.orderNumber) {
-    this.orderNumber = `BS-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
-  }
-  next();
-});
+// orderSchema.pre("save", function (next) {
+//   if (!this.orderNumber) {
+//     this.orderNumber = `BS-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+//   }
+//   next();
+// });
 
 orderSchema.index({ user: 1, createdAt: -1 });
 orderSchema.index({ orderNumber: 1 });
 orderSchema.index({ status: 1 });
 
-export const Order = mongoose.model<IOrder>('Order', orderSchema);
+export const Order = mongoose.model<IOrder>("Order", orderSchema);
