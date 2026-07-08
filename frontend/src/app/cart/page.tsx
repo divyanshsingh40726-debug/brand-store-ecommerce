@@ -78,7 +78,7 @@ export default function CartPage() {
                 </div>
 
                 <div className="space-y-6">
-                  {items.map((item) => (
+                  {items.map((item:any) => (
                     <motion.div
                       layout
                       initial={{ opacity: 0, scale: 0.95 }}
