@@ -69,7 +69,7 @@ export default function ProductDetailPage({
         setLoading(false);
         return;
       }
-      p = p.data;
+      
       console.log(p);
       setProduct(p);
       setSelectedSize(p.sizes[0].size ?? "");
