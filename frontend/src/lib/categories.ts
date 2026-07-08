@@ -5,7 +5,7 @@ function normalizeCategory(raw: any): Category {
   const { _id, __v, ...rest } = raw;
   return {
     ...rest,
-    id: rest.id ?? String(_id),
+    id: String(_id),
   };
 }
 
@@ -15,7 +15,7 @@ export async function getCategoryBySlug(
   try {
     const res = await api.get(`/categories/${slug}`);
     const raw = res.data.data ?? res.data;
-    return raw ? normalizeCategory(raw) : null;
+    return normalizeCategory(raw);
   } catch (err: any) {
     if (err?.response?.status === 404) return null;
     throw err;
