@@ -56,15 +56,14 @@ export interface Brand {
 
 // Category types
 export interface Category {
-  _id: string;
+  id: string;
   name: string;
   slug: string;
-  image: string;
-  description: string;
-  parentCategory: string | null;
-  productCount: number;
-  isActive: boolean;
+  description?: string;
+  image?: string;
+  isActive?: boolean;
 }
+
 
 // User types
 export interface User {
