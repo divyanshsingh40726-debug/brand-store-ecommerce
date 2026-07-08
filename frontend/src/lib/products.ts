@@ -17,7 +17,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     // const res = await api.get<ProductResponse>(`/products/${slug}`);
     const res = await api.get(`/products/${slug}`);
     const raw = res.data.data ?? res.data; // adjust if your shape differs
-    return raw ? normalizeProduct(raw) : null;
+    return  normalizeProduct(raw);
   } catch (err: any) {
     if (err?.response?.status === 404) return null;
     throw err;
