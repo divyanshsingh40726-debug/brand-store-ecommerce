@@ -1,7 +1,7 @@
 // Product types
 // lib/types.ts
 export interface Product {
-  _id: string;
+  id: string;
   name: string;
   slug: string;
   description: string;
