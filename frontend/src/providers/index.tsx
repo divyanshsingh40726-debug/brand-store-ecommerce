@@ -1,13 +1,14 @@
-'use client';
+"use client";
 
-import { Provider } from 'react-redux';
-import { store } from '@/store';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ThemeProvider } from 'next-themes';
-import { Toaster } from 'sonner';
-import { useEffect, useState } from 'react';
-import { initializeCart } from '@/store/slices/cartSlice';
-import { initializeWishlist } from '@/store/slices/wishlistSlice';
+import { Provider } from "react-redux";
+import { store } from "@/store";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
+import { useEffect, useState } from "react";
+import { initializeCart } from "@/store/slices/cartSlice";
+import { initializeWishlist } from "@/store/slices/wishlistSlice";
+import AuthProvider from "./../components/providers/AuthProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,29 +36,31 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange={false}
-        >
-          <StoreInitializer />
-          {children}
-          {mounted && (
-            <Toaster
-              position="bottom-right"
-              richColors
-              closeButton
-              toastOptions={{
-                style: {
-                  fontFamily: 'var(--font-inter)',
-                },
-              }}
-            />
-          )}
-        </ThemeProvider>
-      </QueryClientProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange={false}
+          >
+            <StoreInitializer />
+            {children}
+            {mounted && (
+              <Toaster
+                position="bottom-right"
+                richColors
+                closeButton
+                toastOptions={{
+                  style: {
+                    fontFamily: "var(--font-inter)",
+                  },
+                }}
+              />
+            )}
+          </ThemeProvider>
+        </QueryClientProvider>
+      </AuthProvider>
     </Provider>
   );
 }
