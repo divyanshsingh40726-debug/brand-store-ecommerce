@@ -98,15 +98,15 @@ export default function CategoryPage({ params }: PageProps) {
     let list = [...products];
 
     if (selectedBrands.length > 0) {
-      list = list.filter((p) => selectedBrands.includes(p.brand.name));
+      list = list.filter((p:any) => selectedBrands.includes(p.brand.name));
     }
     if (selectedSizes.length > 0) {
-      list = list.filter((p) =>
-        p.sizes.some((s) => selectedSizes.includes(s.size)),
+      list = list.filter((p:any) =>
+        p.sizes.some((s:any) => selectedSizes.includes(s.size)),
       );
     }
     list = list.filter(
-      (p) => p.price >= priceRange[0] && p.price <= priceRange[1],
+      (p:any) => p.price >= priceRange[0] && p.price <= priceRange[1],
     );
 
     switch (sortBy) {
