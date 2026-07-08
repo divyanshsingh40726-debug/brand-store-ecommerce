@@ -1,6 +1,6 @@
 // lib/products.ts
 import api from "./api";
-import { Product } from "./types";
+import { Product,ProductResponse } from "./types";
 
 // Turns a raw MongoDB product (with _id) into a plain, safe object with `id: string`.
 // This is the actual fix for the ObjectId error — do this immediately after every fetch.
@@ -14,8 +14,9 @@ function normalizeProduct(raw: any): Product {
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
+    // const res = await api.get<ProductResponse>(`/products/${slug}`);
     const res = await api.get(`/products/${slug}`);
-    const raw = res.data.product ?? res.data; // adjust if your shape differs
+    const raw = res.data.data ?? res.data; // adjust if your shape differs
     return raw ? normalizeProduct(raw) : null;
   } catch (err: any) {
     if (err?.response?.status === 404) return null;
