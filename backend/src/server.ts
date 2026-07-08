@@ -64,6 +64,13 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+app.get("/", (_req, res) => {
+  res.json({
+    success: true,
+    message: "Brand Store API is running 🚀",
+  });
+});
+
 // Error handling
 app.use(notFound);
 app.use(errorHandler);
