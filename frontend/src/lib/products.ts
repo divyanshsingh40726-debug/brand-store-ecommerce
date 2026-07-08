@@ -5,10 +5,13 @@ import { Product,ProductResponse } from "./types";
 // Turns a raw MongoDB product (with _id) into a plain, safe object with `id: string`.
 // This is the actual fix for the ObjectId error — do this immediately after every fetch.
 function normalizeProduct(raw: any): Product {
-  const { _id, __v, ...rest } = raw;
+  const { _id, __v,category, ...rest } = raw;
+  category.id = String(category._id);
+  delete category._id;
   return {
     ...rest,
-    id: rest.id ?? String(_id), // force to plain string, no matter what shape _id is
+    category,
+    id: String(_id), // force to plain string, no matter what shape _id is
   };
 }
 
