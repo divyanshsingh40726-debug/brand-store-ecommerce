@@ -14,39 +14,11 @@ export interface Product {
   sizes: string[];
   colors: string[];
   badge?: string;
-  data: {
-     id: string;
-    image : string;
-    _id: string;
-  name: string;
-  slug: string;
-  description: string;
-  shortDescription: string;
-  brand: Brand;
-  category: Category;
-  price: number;
-  compareAtPrice: number;
-  discount: number;
-  images: string[];
-  colors: ProductColor[];
-  sizes: ProductSize[];
-  specifications: { key: string; value: string }[];
-  rating: number;
-  numReviews: number;
-  totalStock: number;
-  isFeatured: boolean;
-  isNewArrival: boolean;
-  isBestSeller: boolean;
-  isOnSale: boolean;
-  tags: string[];
-  sku: string;
-  weight: number;
-  material: string;
-  gender: "men" | "women" | "unisex";
-  status: "active" | "draft" | "archived";
-  createdAt: string;
-  updatedAt: string;
-  };
+}
+
+export interface ProductResponse {
+  success: boolean;
+  data: Product;
 }
 
 export interface ProductColor {
