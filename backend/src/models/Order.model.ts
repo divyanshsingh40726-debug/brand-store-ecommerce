@@ -132,7 +132,7 @@ const orderSchema = new Schema<IOrder>(
       ],
       default: "pending",
     },
-    isPaid: { type: Boolean, default: false },
+    isPaid: { type: Boolean, default: true },
     paidAt: { type: Date },
     isDelivered: { type: Boolean, default: false },
     deliveredAt: { type: Date },
